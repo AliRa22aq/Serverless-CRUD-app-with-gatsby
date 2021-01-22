@@ -16,8 +16,7 @@ exports.handler = async (event) => {
       q.Update(
           q.Ref(q.Collection("posts") , messageBody.id), {
             data : {
-              detail : messageBody.message,
-              
+              update : messageBody.update
             }
           }
         )
@@ -27,7 +26,7 @@ exports.handler = async (event) => {
     
     return {
       statusCode: 200,
-      body: JSON.stringify({ data: result.data.detail }),
+      body: JSON.stringify({ data: result.data.detail, update: result.data.update }),
 
     }
   } catch (error) {

@@ -10,7 +10,7 @@ const Add = () => {
     <div>
       <h1>Write Something good and let the words spread through this site </h1>
       <Formik
-        initialValues={{ message: '' }}
+        initialValues={{ message: ''}}
         validate={values => {
           const errors = {};
           if (!values.message) {
@@ -19,6 +19,9 @@ const Add = () => {
           return errors;
         }}
         onSubmit={(values) => {
+          values = {...values, update: false}
+          console.log('values')
+          console.log(values)
           fetch(`/.netlify/functions/add`, {
             method: 'post',
             body: JSON.stringify(values)

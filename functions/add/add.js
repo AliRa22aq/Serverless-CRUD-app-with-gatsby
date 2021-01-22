@@ -13,6 +13,7 @@ exports.handler = async (event, context) => {
     // }
 
     const messageBody = JSON.parse(event.body);
+    console.log(messageBody)
 
     var client = new faunadb.Client({ secret: 'fnAEAGLZuCACDc-_n2VXHLj2Bf-uPA_jq1I9F8jw' });
 
@@ -20,7 +21,7 @@ exports.handler = async (event, context) => {
     const result = await client.query(
       q.Create(
         q.Collection('posts'),
-        { data: { detail: messageBody.message } },
+        { data: { detail: messageBody.message, update: messageBody.update  } },
       )
     )
 
@@ -28,7 +29,7 @@ exports.handler = async (event, context) => {
     
     return {
       statusCode: 200,
-      body: JSON.stringify({ detail: result.ref.id }),
+      body: JSON.stringify({ detail: result.ref.id}),
       // // more keys you can return:
       // headers: { "headerName": "headerValue", ... },
       // isBase64Encoded: true,
