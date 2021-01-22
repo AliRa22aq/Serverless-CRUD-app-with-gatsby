@@ -1,12 +1,14 @@
-import React, { useState } from "react"
+import React from "react"
 import { Formik } from 'formik';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 
 const Add = () => {
 
   return (
     <div>
-      <h1>Add</h1>
+      <h1>Write Something good and let the words spread through this site </h1>
       <Formik
         initialValues={{ message: '' }}
         validate={values => {
@@ -36,7 +38,8 @@ const Add = () => {
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
-            <input
+            <TextField
+              fullWidth="true" variant="outlined" type="text" 
               type="message"
               name="message"
               onChange={handleChange}
@@ -45,9 +48,9 @@ const Add = () => {
             />
             {errors.message && touched.message && errors.message}
 
-            <button type="submit" >
+            <Button type="submit" >
               Submit
-           </button>
+           </Button>
           </form>
         )}
       </Formik>

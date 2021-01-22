@@ -1,5 +1,3 @@
-import React, { useState } from "react"
-
 export const delPost = (id) => {
   if (id) {
   console.log(id)

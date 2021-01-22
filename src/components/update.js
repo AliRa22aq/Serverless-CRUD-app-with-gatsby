@@ -1,5 +1,3 @@
-import React, { useState } from "react"
-
 export const updatePost = (values) => {
   fetch(`/.netlify/functions/update`, {
     method: 'POST',
