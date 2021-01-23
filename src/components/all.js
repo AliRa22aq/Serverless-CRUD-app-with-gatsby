@@ -7,15 +7,44 @@ import TextField from '@material-ui/core/TextField';
 import UpdateIcon from '@material-ui/icons/Update';
 import DeleteForeverSharpIcon from '@material-ui/icons/DeleteForeverSharp';
 // import { Formik } from 'formik';
+import Modal from '@material-ui/core/Modal';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+
+
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
+
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
+
+
 
 
 
 
 const All = () => {
-
-  const [fullData, setFullData] = useState([])
-  const [edit, setEdit] = useState(false)
-
 
   useEffect(() => {
     console.log("useEffect Called");
@@ -31,22 +60,28 @@ const All = () => {
       
   }, [fullData]);
 
-  console.log(fullData);
-
+  const [fullData, setFullData] = useState([])
 
   const handleChange = (e) => {
     console.log(e)
-    //console.log(e)
-    //setEditData(e.target.value)
-    //setEdit(false)
     updatePost(e)
-
   }
 
-  const handleUpdate = (e) => {
-    console.log(e)
-    updatePost2(e)
-  }
+
+  const classes = useStyles();
+  // getModalStyle is not a pure function, we roll the style only on the first render
+  const [modalStyle] = useState(getModalStyle);
+
+
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
 
   return (
@@ -58,22 +93,31 @@ const All = () => {
           return (
             
               <div key={ind}>
-                {console.log(ind)}
                 {
-                !edit? 
                 <div >
                      
                       <Button onClick={() => (delPost(fullData[ind].ref['@ref'].id))}> <DeleteForeverSharpIcon/> </Button> 
                       {post.data.detail}
-                      <Button onClick={ () => {setEdit(true)}} > <UpdateIcon/> </Button> 
-                </div> :
-                <div>
-                      <TextField fullWidth="true" variant="outlined" type="text" defaultValue={post.data.detail} onChange={(e)=> handleChange({ id: fullData[ind].ref['@ref'].id, message:  e.target.value, update: true })} />
-                      <Button variant="outlined" color="primary" onClick={()=> {setEdit(false)}}> done </Button> <br />
-                </div>                  
-                
-                  
-                  }
+                      <Button onClick={handleOpen}> <UpdateIcon/> </Button> 
+                                        
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                  >
+                    <div style={modalStyle} className={classes.paper}>
+                      <h2 id="simple-modal-title">Text in a modal</h2>
+                      <p id="simple-modal-description">
+                        Update it
+                        <TextField fullWidth="true" variant="outlined" type="text" defaultValue={post.data.detail} onChange={(e) => handleChange({ id: fullData[ind].ref['@ref'].id, message: e.target.value, update: true })} />
+                        <Button variant="outlined" onClick={handleOpen} color="primary" > done </Button> <br />
+
+                      </p>
+                    </div>
+                  </Modal>
+                </div> 
+              }
 
               </div>
           )}
@@ -86,3 +130,5 @@ const All = () => {
 
 
 export default All
+
+
