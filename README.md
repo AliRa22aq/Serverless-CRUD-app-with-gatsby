@@ -1,6 +1,6 @@
 App link: [CRUD-APP](https://crud-app-by-ali.netlify.app/)
 
-[!Image](./image.png)
+![Image](./image.png)
 
 
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
