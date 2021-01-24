@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react"
 import { delPost } from './remove';
 import { updatePost } from './update';
-import { updatePost2 } from './update';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import UpdateIcon from '@material-ui/icons/Update';
 import DeleteForeverSharpIcon from '@material-ui/icons/DeleteForeverSharp';
-// import { Formik } from 'formik';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -45,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 const All = () => {
+  const [fullData, setFullData] = useState([])
+
 
   useEffect(() => {
     console.log("useEffect Called");
@@ -60,7 +60,6 @@ const All = () => {
       
   }, [fullData]);
 
-  const [fullData, setFullData] = useState([])
 
   const handleChange = (e) => {
     console.log(e)
@@ -111,7 +110,7 @@ const All = () => {
                       <p id="simple-modal-description">
                         Update it
                         <TextField fullWidth="true" variant="outlined" type="text" defaultValue={post.data.detail} onChange={(e) => handleChange({ id: fullData[ind].ref['@ref'].id, message: e.target.value, update: true })} />
-                        <Button variant="outlined" onClick={handleOpen} color="primary" > done </Button> <br />
+                        <Button variant="outlined" onClick={handleClose} color="primary" > done </Button> <br />
 
                       </p>
                     </div>
