@@ -1,26 +1,26 @@
 import React from "react"
-import { Formik } from 'formik';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as yup from 'yup';
+
+
+let schema = yup.object().shape({
+  message: yup.string().required("Please enter something"),
+});
 
 
 const Add = () => {
 
   return (
     <div>
-      <h1>Write Something good and let the words spread through this site </h1>
-      <Formik
-        initialValues={{ message: ''}}
-        validate={values => {
-          const errors = {};
-          if (!values.message) {
-            errors.message = 'Required';
-          }
-          return errors;
-        }}
+      <h1>Hey, welcome to the CRUD app. Netlify functions and Fauda DB is behind this website </h1>
+      
+     <Formik 
+        initialValues={{ message: '' }}
+        validationSchema={schema}
         onSubmit={(values) => {
-          console.log('values :')
-          console.log(values)
+
           fetch(`/.netlify/functions/add`, {
             method: 'post',
             body: JSON.stringify(values)
@@ -31,31 +31,20 @@ const Add = () => {
             });
         }}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <TextField
-              fullWidth="true" variant="outlined" type="text" 
-              type="message"
-              name="message"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.message}
-            />
-            {errors.message && touched.message && errors.message}
+        {
+          (formik) => (
+            <Form onSubmit={formik.handleSubmit} >
+              <Field as={TextField} variant='outlined' fullWidth="true" name='message' label='message' /> <br />
+              <ErrorMessage name="message" />
+              <div style={{ marginTop: '20px' }} >
+                <Button type='submit' color='primary' variant='outlined' >Add</Button>
+              </div>
+            </Form>
+          )
+        }
 
-            <Button type="submit" >
-              Submit
-           </Button>
-          </form>
-        )}
       </Formik>
+
     </div>
   )
 }
