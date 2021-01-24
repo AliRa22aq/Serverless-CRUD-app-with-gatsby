@@ -34,7 +34,7 @@ const Add = () => {
         {
           (formik) => (
             <Form onSubmit={formik.handleSubmit} >
-              <Field as={TextField} variant='outlined' fullWidth="true" name='message' label='message' /> <br />
+              <Field as={TextField} variant='outlined' fullWidth="true" name='message' label='Message' /> <br />
               <ErrorMessage name="message" />
               <div style={{ marginTop: '20px' }} >
                 <Button type='submit' color='primary' variant='outlined' >Add</Button>
