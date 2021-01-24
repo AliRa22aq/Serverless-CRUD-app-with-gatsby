@@ -19,8 +19,7 @@ const Add = () => {
           return errors;
         }}
         onSubmit={(values) => {
-          values = {...values, update: false}
-          console.log('values')
+          console.log('values :')
           console.log(values)
           fetch(`/.netlify/functions/add`, {
             method: 'post',

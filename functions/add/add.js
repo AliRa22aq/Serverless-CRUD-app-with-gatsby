@@ -21,7 +21,7 @@ exports.handler = async (event, context) => {
     const result = await client.query(
       q.Create(
         q.Collection('posts'),
-        { data: { detail: messageBody.message, update: messageBody.update  } },
+        { data: { detail: messageBody.message  } },
       )
     )
 

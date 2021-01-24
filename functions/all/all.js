@@ -14,8 +14,6 @@ exports.handler = async () => {
         q.Paginate(q.Documents(q.Collection("posts"))),
          q.Lambda(x => q.Get(x))
          )
-
-
     )
 
     //const subject = event.queryStringParameters.name || 'World'

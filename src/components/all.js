@@ -7,7 +7,7 @@ import UpdateIcon from '@material-ui/icons/Update';
 import DeleteForeverSharpIcon from '@material-ui/icons/DeleteForeverSharp';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
-
+// import { Formik, Field, Form } from 'formik';
 
 
 
@@ -39,36 +39,19 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-
-
-
 const All = () => {
-  const [fullData, setFullData] = useState([])
 
-
-  useEffect(() => {
-    console.log("useEffect Called");
-    fetch(`/.netlify/functions/all`)
-      .then(response => response.json())
-      .then(data => {
-        setFullData(data)
-        // data.map((post, ind) => {
-        //   console.log("start")
-        //   console.log(post)
-        //   setData(pre => [pre, {message: post.data.detail, id: data[ind].ref['@ref'].id }])
-      });
-      
-  }, [fullData]);
-
+  const [fullData, setFullData] = useState([]);
+  const [update, setUpdate] = useState({id: '', message: ''});
+  console.log(update)
+  console.log("update")
 
   const handleChange = (e) => {
     console.log(e)
     updatePost(e)
   }
 
-
   const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = useState(getModalStyle);
 
 
@@ -83,50 +66,90 @@ const All = () => {
   };
 
 
+
+
+  useEffect(() => {
+    console.log("useEffect Called");
+    fetch(`/.netlify/functions/all`)
+      .then(response => response.json())
+      .then(data => {
+        setFullData(data)
+      });
+      
+  }, [fullData]);
+
+
+
   return (
     <div>
 
-      {fullData.map((post, ind) => {
+      { fullData.map((post, ind) => {
 
+          return ( 
 
-          return (
-            
               <div key={ind}>
-                {
-                <div >
-                     
+
                       <Button onClick={() => (delPost(fullData[ind].ref['@ref'].id))}> <DeleteForeverSharpIcon/> </Button> 
                       {post.data.detail}
-                      <Button onClick={handleOpen}> <UpdateIcon/> </Button> 
-                                        
+                      <Button onClick={() => {
+                        handleOpen()
+                        setUpdate({ id: fullData[ind].ref['@ref'].id, message: fullData[ind].data.detail})
+                        }}> <UpdateIcon/> </Button> 
+                                                          
                   <Modal
                     open={open}
                     onClose={handleClose}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                   >
-                    <div style={modalStyle} className={classes.paper}>
-                      <h2 id="simple-modal-title">Text in a modal</h2>
+                    <div style={modalStyle} className={classes.paper} div key={ind}>
+                      <h2 id="simple-modal-title">Update Please</h2>
                       <p id="simple-modal-description">
-                        Update it
-                        <TextField fullWidth="true" variant="outlined" type="text" defaultValue={post.data.detail} onChange={(e) => handleChange({ id: fullData[ind].ref['@ref'].id, message: e.target.value, update: true })} />
+
+                        <TextField 
+                        fullWidth="true" 
+                        variant="outlined" 
+                        type="text" 
+                        defaultValue={update.message} 
+                        onChange={(e) => handleChange({ id: update.id, message: e.target.value})} />
+
                         <Button variant="outlined" onClick={handleClose} color="primary" > done </Button> <br />
+                        {/* <Formik 
+                                  initialValues={{ post: ''}}
+                                  onSubmit={(values) => {
+                                    handleChange(values.post, updateID)
+                                  }}
+                              >
+                                  {
+                                      (formik) => (
+                                          <Form onSubmit={formik.handleSubmit} >
+                                              <Field as={TextField} variant='outlined' name='post' label='update post' />
+                                              <div style={{marginTop: '20px'}} >
+                                                  <Button type='submit' color='secondary' variant='outlined' >Update</Button>
+                                              </div>
+                                          </Form>
+                                      )
+                                  }
+
+                              </Formik> */}
+
+
+
 
                       </p>
                     </div>
                   </Modal>
-                </div> 
-              }
 
               </div>
           )}
         )}
 
-    </div>
-  )
+
+          </div>
+          )  
+
+
 }
-
-
 
 export default All
 

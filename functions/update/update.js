@@ -17,7 +17,6 @@ exports.handler = async (event) => {
           q.Ref(q.Collection("posts") , messageBody.id), {
             data : {
               detail : messageBody.message,
-              
             }
           }
         )
